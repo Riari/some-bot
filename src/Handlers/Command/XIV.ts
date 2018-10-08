@@ -31,17 +31,21 @@ export default class XIVCommandHandler extends CommandHandler {
   handle = (args: Array<string>, message: Message) => {
     const subcommand = args.shift()
 
-    switch (subcommand) {
-      case 'lookup':
-        return this.lookup(args, message)
-      case 'help':
-      case '?':
-        if (args[0]) {
-          return this.helpForSubcommand(message, args[0])
-        }
-        return this.help(message)
-      default:
-        throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
+    try {
+      switch (subcommand) {
+        case 'lookup':
+          return this.lookup(args, message)
+        case 'help':
+        case '?':
+          if (args[0]) {
+            return this.helpForSubcommand(message, args[0])
+          }
+          return this.help(message)
+        default:
+          throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
+      }
+    } catch (error) {
+      throw error
     }
   }
 
@@ -93,7 +97,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
     switch (type) {
       case 'pc':
-        return this.lookupPC(args, message).catch(reason => { throw new Error(reason) })
+        return this.lookupPC(args, message).catch(reason => { console.log(reason); throw new Error(reason) })
     }
   }
 
