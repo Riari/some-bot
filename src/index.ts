@@ -26,6 +26,7 @@ client.on('message', (message: Message) => {
     try {
       handler.handle(args, message)
     } catch (error) {
+      console.error(error)
       message.channel.send(`[Error] ${error.message}`)
     }
   } else {
@@ -34,6 +35,7 @@ client.on('message', (message: Message) => {
     try {
       handler.handle(message)
     } catch (error) {
+      console.error(error)
       message.channel.send(`[Error] ${error.message}`)
     }
   }
