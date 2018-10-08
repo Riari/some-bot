@@ -95,9 +95,13 @@ export default class XIVCommandHandler extends CommandHandler {
       throw new Error(`Invalid usage. Type "/xiv help ${type}" for details.`)
     }
 
-    switch (type) {
-      case 'pc':
-        return this.lookupPC(args, message).catch(reason => { console.log(reason); throw new Error(reason) })
+    try {
+      switch (type) {
+        case 'pc':
+          return this.lookupPC(args, message)
+      }
+    } catch (error) {
+      throw error
     }
   }
 
@@ -109,7 +113,7 @@ export default class XIVCommandHandler extends CommandHandler {
     const searchResponse = await axios.get(LODESTONE_BASE_URI + `/lodestone/character/?q=${firstName}+${lastName}&worldname=${world}`)
 
     if (searchResponse.status !== 200) {
-      return Promise.reject(`Unexpected response from Lodestone (received status code ${searchResponse.status})`)
+      throw new Error(`Unexpected response from Lodestone (received status code ${searchResponse.status})`)
     }
 
     let html = searchResponse.data
@@ -123,13 +127,13 @@ export default class XIVCommandHandler extends CommandHandler {
     })
 
     if (!pcLink) {
-      return Promise.reject("I couldn't find that PC, sorry.")
+      throw new Error("I couldn't find that PC, sorry.")
     }
 
     const characterResponse = await axios.get(pcLink)
 
     if (characterResponse.status !== 200) {
-      return Promise.reject(`Unexpected response from Lodestone (received status code ${characterResponse.status})`)
+      throw new Error(`Unexpected response from Lodestone (received status code ${characterResponse.status})`)
     }
 
     html = characterResponse.data
