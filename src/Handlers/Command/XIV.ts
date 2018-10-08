@@ -50,6 +50,8 @@ export default class XIVCommandHandler extends CommandHandler {
       embed.addField(command, this.subcommands[command].description)
     }
 
+    embed.setFooter('Type "/xiv help <subcommand>" for help with a specific subcommand.')
+
     message.channel.send(embed)
   }
 
