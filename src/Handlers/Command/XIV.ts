@@ -93,7 +93,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
     switch (type) {
       case 'pc':
-        return this.lookupPC(args, message)
+        return this.lookupPC(args, message).catch(error => { throw error })
     }
   }
 
