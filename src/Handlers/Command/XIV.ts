@@ -105,7 +105,7 @@ export default class XIVCommandHandler extends CommandHandler {
     const searchResponse = await axios.get(LODESTONE_BASE_URI + `/lodestone/character/?q=${firstName}+${lastName}&worldname=${world}`)
 
     if (searchResponse.status !== 200) {
-      throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
+      throw new Error(`Unexpected response from Lodestone (received status code ${searchResponse.status})`)
     }
 
     let html = searchResponse.data
