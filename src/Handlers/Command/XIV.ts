@@ -13,11 +13,9 @@ export default class XIVCommandHandler extends CommandHandler {
 
     switch (subcommand) {
       case 'lookup':
-        if (args.length < 4) {
-          throw new Error(`${subcommand} expects 4 arguments: <type> <first name> <last name>`)
-        }
-
         return this.lookup(args, message)
+      default:
+        throw new Error('Unrecognised subcommand. Available subcommands for /xiv are: lookup')
     }
   }
 
@@ -26,6 +24,10 @@ export default class XIVCommandHandler extends CommandHandler {
 
     switch (type) {
       case 'pc':
+        if (args.length < 3) {
+          throw new Error(`lookup type "${type}" expects 3 arguments: <world> <first name> <last name>`)
+        }
+
         return this.lookupPC(args, message)
       default:
         throw new Error(`lookup type "${type}" is unknown`)
