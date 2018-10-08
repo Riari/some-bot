@@ -5,32 +5,85 @@ const cheerio = require('cheerio')
 
 import CommandHandler from '../Command'
 
+export const XIV_SUBCOMMANDS = {
+  lookup: {
+    description: 'Perform a lookup via Lodestone.',
+    args: {
+      pc: {
+        minArgs: 3,
+        description: 'Look up a player character',
+        usage: 'pc <world> <first name> <last name>'
+      }
+    }
+  }
+}
+
 const LODESTONE_BASE_URI = 'https://na.finalfantasyxiv.com'
 
 export default class XIVCommandHandler extends CommandHandler {
+  subcommands = XIV_SUBCOMMANDS
+
   handle = (args: Array<string>, message: Message) => {
     const subcommand = args.shift()
 
     switch (subcommand) {
       case 'lookup':
         return this.lookup(args, message)
+      case 'help':
+      case '?':
+        if (args[0]) {
+          return this.helpForSubcommand(message, args[0])
+        }
+        return this.help(message)
       default:
-        throw new Error('Unrecognised subcommand. Available subcommands for /xiv are: lookup')
+        throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
     }
+  }
+
+  help = (message: Message) => {
+    const embed = new RichEmbed
+
+    embed.setTitle('/xiv <subcommand>')
+    embed.setDescription('Final Fantasy XIV stuff. Available subcommands:')
+    
+    for (var command in this.subcommands) {
+      embed.addField(command, this.subcommands[command].description)
+    }
+
+    message.channel.send(embed)
+  }
+
+  helpForSubcommand = (message: Message, subcommand: string) => {
+    const embed = new RichEmbed
+
+    if (!this.subcommands[subcommand]) {
+      throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
+    }
+
+    const command = this.subcommands[subcommand]
+
+    embed.setDescription(`${command.description} Arguments:`)
+
+    for (var arg in command.args) {
+      const details = command.args[arg]
+      embed.addField(`${arg} (${details.description})`, `Usage: /xiv ${subcommand} ${details.usage}`)
+    }
+
+    message.channel.send(embed)
   }
 
   lookup = (args: Array<string>, message: Message) => {
     const type = args.shift()
 
+    if (args.length < this.subcommands.lookup.args[type].minArgs) {
+      throw new Error(`Invalid usage. Type "/xiv help ${type} for details.`)
+    }
+
     switch (type) {
       case 'pc':
-        if (args.length < 3) {
-          throw new Error(`lookup type "${type}" expects 3 arguments: <world> <first name> <last name>`)
-        }
-
         return this.lookupPC(args, message)
       default:
-        throw new Error(`lookup type "${type}" is unknown`)
+        throw new Error(`Lookup type "${type}" is unknown.`)
     }
   }
 
