@@ -18,7 +18,7 @@ client.on('message', (message: Message) => {
     }
 
     if (!commandHandlers[command]) {
-      return message.channel.sendMessage("I don't recognise that command, sorry.")
+      return console.log(`No registered handler for command '${command}'; ignoring`)
     }
 
     const handler = new commandHandlers[command]

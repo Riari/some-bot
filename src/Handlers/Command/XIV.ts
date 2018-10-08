@@ -46,9 +46,9 @@ export default class XIVCommandHandler extends CommandHandler {
         let html = response.data
         let $ = cheerio.load(html)
 
-        const pcLink = $('a.entry__link').first().attr('href')
+        const pcLink = LODESTONE_BASE_URI + $('a.entry__link').first().attr('href')
 
-        axios.get(LODESTONE_BASE_URI + pcLink)
+        axios.get(pcLink)
           .then(response => {
             if (response.status !== 200) {
               throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
@@ -59,7 +59,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
             const imageURL = $('.character__detail__image a').attr('href')
 
-            message.channel.send(`Here's ${firstName}: ${imageURL}`)
+            message.channel.send(`Here's ${firstName}: <${pcLink}> \n ${imageURL}`)
           })
       })
   }
