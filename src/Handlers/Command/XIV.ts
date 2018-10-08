@@ -59,7 +59,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
             const imageURL = $('.character__detail__image a').attr('href')
 
-            message.channel.send(`Here's ${firstName}: <${pcLink}> \n ${imageURL}`)
+            message.channel.send(`Here's ${firstName}: <${pcLink}> \n${imageURL}`)
           })
       })
   }
