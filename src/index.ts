@@ -13,8 +13,8 @@ client.on('message', (message: Message) => {
     const args = message.content.split(' ')
     const command = args.shift().substr(1)
 
-    if (!command || !args.length) {
-      throw new Error('Invalid command format.')
+    if (!command) {
+      return
     }
 
     if (!commandHandlers[command]) {
