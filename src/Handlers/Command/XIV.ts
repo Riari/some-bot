@@ -145,12 +145,10 @@ export default class XIVCommandHandler extends CommandHandler {
             embed.setDescription(levelString + ' thingy')
             
             message.channel.send(embed)
-          })
-          .catch(error => {
+          }, error => {
             throw error
           })
-      })
-      .catch(error => {
+      }, error => {
         throw error
       })
   }
