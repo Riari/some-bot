@@ -97,59 +97,53 @@ export default class XIVCommandHandler extends CommandHandler {
     }
   }
 
-  lookupPC = (args: Array<string>, message: Message) => {
+  lookupPC = async (args: Array<string>, message: Message) => {
     const world = args[0]
     const firstName = args[1]
     const lastName = args[2]
 
-    axios.get(LODESTONE_BASE_URI + `/lodestone/character/?q=${firstName}+${lastName}&worldname=${world}`)
-      .then(response => {
-        if (response.status !== 200) {
-          throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
-        }
+    const searchResponse = await axios.get(LODESTONE_BASE_URI + `/lodestone/character/?q=${firstName}+${lastName}&worldname=${world}`)
 
-        let html = response.data
-        let $ = cheerio.load(html)
+    if (searchResponse.status !== 200) {
+      throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
+    }
 
-        let pcLink = null
-        $('.entry').each((i, element) => {
-          if ($(element).find('.entry__name').html() == `${firstName} ${lastName}`) {
-            pcLink = LODESTONE_BASE_URI + $(element).find('.entry__link').attr('href')
-          }
-        })
+    let html = searchResponse.data
+    let $ = cheerio.load(html)
 
-        if (!pcLink) {
-          throw new Error("I couldn't find that PC, sorry.")
-        }
+    let pcLink = null
+    $('.entry').each((i, element) => {
+      if ($(element).find('.entry__name').html() == `${firstName} ${lastName}`) {
+        pcLink = LODESTONE_BASE_URI + $(element).find('.entry__link').attr('href')
+      }
+    })
 
-        axios.get(pcLink)
-          .then(response => {
-            if (response.status !== 200) {
-              throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
-            }
+    if (!pcLink) {
+      throw new Error("I couldn't find that PC, sorry.")
+    }
 
-            let html = response.data
-            let $ = cheerio.load(html)
+    const characterResponse = await axios.get(pcLink)
 
-            const faceImageURL = $('.frame__chara__face img').attr('src')
-            const mainImageURL = $('.character__detail__image a').attr('href')
-            const levelString = $('.character__class__data p').first().html()
-            const classIcon = $('.character__class_icon img').attr('src')
+    if (characterResponse.status !== 200) {
+      throw new Error(`Unexpected response from Lodestone (received status code ${characterResponse.status})`)
+    }
 
-            const embed = new RichEmbed
+    html = characterResponse.data
+    $ = cheerio.load(html)
 
-            embed.setAuthor(`${firstName} ${lastName}`, faceImageURL, pcLink)
-            embed.setThumbnail(classIcon)
-            embed.setImage(mainImageURL)
-            embed.setURL(pcLink)
-            embed.setDescription(levelString + ' thingy')
-            
-            message.channel.send(embed)
-          }, error => {
-            throw error
-          })
-      }, error => {
-        throw error
-      })
+    const faceImageURL = $('.frame__chara__face img').attr('src')
+    const mainImageURL = $('.character__detail__image a').attr('href')
+    const levelString = $('.character__class__data p').first().html()
+    const classIcon = $('.character__class_icon img').attr('src')
+
+    const embed = new RichEmbed
+
+    embed.setAuthor(`${firstName} ${lastName}`, faceImageURL, pcLink)
+    embed.setThumbnail(classIcon)
+    embed.setImage(mainImageURL)
+    embed.setURL(pcLink)
+    embed.setDescription(levelString + ' thingy')
+    
+    message.channel.send(embed)
   }
 }
