@@ -4,6 +4,11 @@ import client from './client'
 import KeywordHandler from './Handlers/Keyword'
 import XIVCommandHandler from './Handlers/Command/XIV'
 
+function handleError(error: Error, message: Message) {
+  console.error(error)
+  message.channel.send(`[Error] ${error.message}`)
+}
+
 client.on('message', (message: Message) => {
   if (message.content.startsWith('/')) {
     const commandHandlers = {
@@ -24,10 +29,9 @@ client.on('message', (message: Message) => {
     const handler = new commandHandlers[command]
 
     try {
-      handler.handle(args, message)
+      handler.handle(args, message).catch(error => handleError(error, message))
     } catch (error) {
-      console.error(error)
-      message.channel.send(`[Error] ${error.message}`)
+      handleError(error, message)
     }
   } else {
     const handler = new KeywordHandler
@@ -35,8 +39,7 @@ client.on('message', (message: Message) => {
     try {
       handler.handle(message)
     } catch (error) {
-      console.error(error)
-      message.channel.send(`[Error] ${error.message}`)
+      handleError(error, message)
     }
   }
 })

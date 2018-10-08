@@ -31,21 +31,17 @@ export default class XIVCommandHandler extends CommandHandler {
   handle = (args: Array<string>, message: Message) => {
     const subcommand = args.shift()
 
-    try {
-      switch (subcommand) {
-        case 'lookup':
-          return this.lookup(args, message)
-        case 'help':
-        case '?':
-          if (args[0]) {
-            return this.helpForSubcommand(message, args[0])
-          }
-          return this.help(message)
-        default:
-          throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
-      }
-    } catch (error) {
-      throw error
+    switch (subcommand) {
+      case 'lookup':
+        return this.lookup(args, message)
+      case 'help':
+      case '?':
+        if (args[0]) {
+          return this.helpForSubcommand(message, args[0])
+        }
+        return this.help(message)
+      default:
+        throw new Error('Unrecognised subcommand. Type "/xiv help" for a list of available subcommands.')
     }
   }
 
@@ -95,13 +91,9 @@ export default class XIVCommandHandler extends CommandHandler {
       throw new Error(`Invalid usage. Type "/xiv help ${type}" for details.`)
     }
 
-    try {
-      switch (type) {
-        case 'pc':
-          return this.lookupPC(args, message)
-      }
-    } catch (error) {
-      throw error
+    switch (type) {
+      case 'pc':
+        return this.lookupPC(args, message)
     }
   }
 
@@ -127,7 +119,7 @@ export default class XIVCommandHandler extends CommandHandler {
     })
 
     if (!pcLink) {
-      throw new Error("I couldn't find that PC, sorry.")
+      return message.channel.send("I couldn't find that PC, sorry.")
     }
 
     const characterResponse = await axios.get(pcLink)
