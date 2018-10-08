@@ -84,7 +84,7 @@ export default class XIVCommandHandler extends CommandHandler {
     const type = args.shift()
 
     if (args.length < this.subcommands.lookup.args[type].minArgs) {
-      throw new Error(`Invalid usage. Type "/xiv help ${type} for details.`)
+      throw new Error(`Invalid usage. Type "/xiv help ${type}" for details.`)
     }
 
     switch (type) {
