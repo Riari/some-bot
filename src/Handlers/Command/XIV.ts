@@ -11,7 +11,7 @@ export const XIV_SUBCOMMANDS = {
     args: {
       pc: {
         minArgs: 3,
-        description: 'Look up a player character',
+        description: 'Look up a player character.',
         usage: 'pc <world> <first name> <last name>'
       }
     }
@@ -68,7 +68,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
     for (var arg in command.args) {
       const details = command.args[arg]
-      embed.addField(`${arg} (${details.description})`, `Usage: /xiv ${subcommand} ${details.usage}`)
+      embed.addField(arg, `${details.description}\nUsage: /xiv ${subcommand} ${details.usage}`)
     }
 
     message.channel.send(embed)
