@@ -2,9 +2,9 @@
   "name": "some-bot",
   "version": "1.0.0",
   "description": "Discord Bot for Some Place",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
