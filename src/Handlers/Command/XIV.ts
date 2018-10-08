@@ -1,6 +1,6 @@
 import { Message } from 'discord.js'
 import axios from 'axios'
-import cheerio from 'cheerio'
+import { cheerio } from 'cheerio'
 
 import CommandHandler from '../Command'
 
