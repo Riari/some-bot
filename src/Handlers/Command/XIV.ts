@@ -70,7 +70,7 @@ export default class XIVCommandHandler extends CommandHandler {
             embed.setURL(pcLink)
             embed.setDescription(levelString + ' thingy')
             
-            message.channel.sendEmbed(embed)
+            message.channel.send(embed)
           })
       })
   }
