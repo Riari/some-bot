@@ -26,7 +26,7 @@ client.on('message', (message: Message) => {
     try {
       handler.handle(args, message)
     } catch (error) {
-      message.channel.sendMessage(`[Error] ${error.message}`)
+      message.channel.send(`[Error] ${error.message}`)
     }
   } else {
     const handler = new KeywordHandler
@@ -34,7 +34,7 @@ client.on('message', (message: Message) => {
     try {
       handler.handle(message)
     } catch (error) {
-      message.channel.sendMessage(`[Error] ${error.message}`)
+      message.channel.send(`[Error] ${error.message}`)
     }
   }
 })

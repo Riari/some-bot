@@ -25,7 +25,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
     switch (type) {
       case 'pc':
-        this.lookupPC(args, message)
+        return this.lookupPC(args, message)
       default:
         throw new Error(`lookup type "${type}" is unknown`)
     }
@@ -58,7 +58,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
             const imageURL = $('.character__detail__image a').attr('href')
 
-            message.channel.sendMessage(`Here's ${firstName}: ${imageURL}`)
+            message.channel.send(`Here's ${firstName}: ${imageURL}`)
           })
       })
   }
