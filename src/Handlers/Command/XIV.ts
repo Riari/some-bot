@@ -48,7 +48,7 @@ export default class XIVCommandHandler extends CommandHandler {
 
         const pcLink = $('a.entry__link').first().attr('href')
 
-        axios.get(pcLink)
+        axios.get(LODESTONE_BASE_URI + pcLink)
           .then(response => {
             if (response.status !== 200) {
               throw new Error(`Unexpected response from Lodestone (received status code ${response.status})`)
