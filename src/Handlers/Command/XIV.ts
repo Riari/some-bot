@@ -146,6 +146,12 @@ export default class XIVCommandHandler extends CommandHandler {
             
             message.channel.send(embed)
           })
+          .catch(error => {
+            throw error
+          })
+      })
+      .catch(error => {
+        throw error
       })
   }
 }
