@@ -64,11 +64,12 @@ export default class XIVCommandHandler extends CommandHandler {
 
     const command = this.subcommands[subcommand]
 
+    embed.setTitle(`/xiv ${subcommand}`)
     embed.setDescription(`${command.description} Arguments:`)
 
     for (var arg in command.args) {
       const details = command.args[arg]
-      embed.addField(arg, `${details.description}\nUsage: /xiv ${subcommand} ${details.usage}`)
+      embed.addField(arg, `${details.description}\nUsage: ${details.usage}`)
     }
 
     message.channel.send(embed)
