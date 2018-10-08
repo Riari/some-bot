@@ -4,6 +4,7 @@
   ],
   "compilerOptions": {
     "target": "es6",
+    "lib": ["es7"],
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node"
   }

@@ -1,14 +1,40 @@
 import { Message } from 'discord.js'
 import client from './client'
 
-import { Handler } from './Interfaces/Handler'
 import KeywordHandler from './Handlers/Keyword'
-import CommandHandler from './Handlers/Command'
+import XIVCommandHandler from './Handlers/Command/XIV'
 
 client.on('message', (message: Message) => {
-  const handler: Handler = message.content.startsWith('/')
-    ? new CommandHandler
-    : new KeywordHandler
-  
-  handler.handle(message)
+  if (message.content.startsWith('/')) {
+    const commandHandlers = {
+      'xiv': XIVCommandHandler
+    }
+
+    const args = message.content.split(' ')
+    const command = args.shift().substr(1)
+
+    if (!command || !args.length) {
+      throw new Error('Invalid command format.')
+    }
+
+    if (!commandHandlers[command]) {
+      return message.channel.sendMessage("I don't recognise that command, sorry.")
+    }
+
+    const handler = new commandHandlers[command]
+
+    try {
+      handler.handle(args, message)
+    } catch (error) {
+      message.channel.sendMessage(`[Error] ${error.message}`)
+    }
+  } else {
+    const handler = new KeywordHandler
+
+    try {
+      handler.handle(message)
+    } catch (error) {
+      message.channel.sendMessage(`[Error] ${error.message}`)
+    }
+  }
 })

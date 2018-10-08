@@ -17,6 +17,8 @@
   },
   "homepage": "https://gitlab.com/riari/some-bot#README",
   "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.2",
     "discord.js": "^11.4.2",
     "typescript": "^3.1.1"
   },
