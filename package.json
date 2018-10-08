@@ -1,0 +1,26 @@
+{
+  "name": "some-bot",
+  "version": "1.0.0",
+  "description": "Discord Bot for Some Place",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/riari/some-bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/riari/some-bot/issues"
+  },
+  "homepage": "https://gitlab.com/riari/some-bot#README",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "typescript": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.4"
+  }
+}
