@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Message, RichEmbed } from 'discord.js'
 import axios from 'axios'
 
 const cheerio = require('cheerio')
@@ -57,9 +57,20 @@ export default class XIVCommandHandler extends CommandHandler {
             let html = response.data
             let $ = cheerio.load(html)
 
-            const imageURL = $('.character__detail__image a').attr('href')
+            const faceImageURL = $('.frame__chara__face img').attr('src')
+            const mainImageURL = $('.character__detail__image a').attr('href')
+            const levelString = $('.character__class__data p').first().html()
+            const classIcon = $('.character__class_icon img').attr('src')
 
-            message.channel.send(`Here's ${firstName}: <${pcLink}> \n${imageURL}`)
+            const embed = new RichEmbed
+
+            embed.setAuthor(`${firstName} ${lastName}`, faceImageURL, pcLink)
+            embed.setThumbnail(classIcon)
+            embed.setImage(mainImageURL)
+            embed.setURL(pcLink)
+            embed.setDescription(levelString + ' thingy')
+            
+            message.channel.sendEmbed(embed)
           })
       })
   }
