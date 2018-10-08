@@ -83,6 +83,10 @@ export default class XIVCommandHandler extends CommandHandler {
   lookup = (args: Array<string>, message: Message) => {
     const type = args.shift()
 
+    if (!this.subcommands.lookup.args[type]) {
+      throw new Error(`Lookup type "${type}" is unknown.`)
+    }
+
     if (args.length < this.subcommands.lookup.args[type].minArgs) {
       throw new Error(`Invalid usage. Type "/xiv help ${type}" for details.`)
     }
@@ -90,8 +94,6 @@ export default class XIVCommandHandler extends CommandHandler {
     switch (type) {
       case 'pc':
         return this.lookupPC(args, message)
-      default:
-        throw new Error(`Lookup type "${type}" is unknown.`)
     }
   }
 
@@ -109,7 +111,16 @@ export default class XIVCommandHandler extends CommandHandler {
         let html = response.data
         let $ = cheerio.load(html)
 
-        const pcLink = LODESTONE_BASE_URI + $('a.entry__link').first().attr('href')
+        let pcLink = null
+        $('.entry').each((i, element) => {
+          if ($(element).find('.entry__name').html() == `${firstName} ${lastName}`) {
+            pcLink = LODESTONE_BASE_URI + $(element).find('.entry__link').attr('href')
+          }
+        })
+
+        if (!pcLink) {
+          throw new Error("I couldn't find that PC, sorry.")
+        }
 
         axios.get(pcLink)
           .then(response => {
