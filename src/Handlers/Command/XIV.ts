@@ -13,6 +13,11 @@ export const XIV_SUBCOMMANDS = {
         minArgs: 3,
         description: 'Look up a player character.',
         usage: 'pc <world> <first name> <last name>'
+      },
+      fc: {
+        minArgs: 2,
+        description: 'Look up a free company. (Not yet implemented)',
+        usage: 'fc <world> <name>'
       }
     }
   }
