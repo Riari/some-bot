@@ -1,20 +1,20 @@
 import { Message } from 'discord.js'
 import client from './client'
 
+import CommandRouter from './CommandRouter'
+import HelpHandler from './Handlers/Help'
 import KeywordHandler from './Handlers/Keyword'
-import XIVCommandHandler from './Handlers/Command/XIV'
 
 function handleError(error: Error, message: Message) {
   console.error(error)
   message.channel.send(`[Error] ${error.message}`)
 }
 
+client.on('ready', () => client.user.setActivity('with wool. Type /? for help.'))
+
 client.on('message', (message: Message) => {
   if (message.content.startsWith('/')) {
-    const commandHandlers = {
-      'xiv': XIVCommandHandler
-    }
-
+    const router = new CommandRouter
     const args = message.content.split(' ')
     const command = args.shift().substr(1)
 
@@ -22,14 +22,17 @@ client.on('message', (message: Message) => {
       return
     }
 
-    if (!commandHandlers[command]) {
+    if (['help', '?'].includes(command)) {
+      const handler = new HelpHandler
+      return handler.handle(command, args, message)
+    }
+
+    if (!router.has(command)) {
       return console.log(`No registered handler for command '${command}'; ignoring`)
     }
 
-    const handler = new commandHandlers[command]
-
     try {
-      handler.handle(args, message).catch(error => handleError(error, message))
+      router.dispatch(command, args, message).catch(error => handleError(error, message))
     } catch (error) {
       handleError(error, message)
     }
