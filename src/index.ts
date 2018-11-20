@@ -1,8 +1,7 @@
 import { Message } from 'discord.js'
 import client from './client'
 
-import CommandRouter from './CommandRouter'
-import HelpHandler from './Handlers/Help'
+import router from './routes'
 import KeywordHandler from './Handlers/Keyword'
 
 function handleError(error: Error, message: Message) {
@@ -14,17 +13,11 @@ client.on('ready', () => client.user.setActivity('with wool. Type /? for help.')
 
 client.on('message', (message: Message) => {
   if (message.content.startsWith('/')) {
-    const router = new CommandRouter
     const args = message.content.split(' ')
     const command = args.shift().substr(1)
 
     if (!command) {
       return
-    }
-
-    if (['help', '?'].includes(command)) {
-      const handler = new HelpHandler
-      return handler.handle(command, args, message)
     }
 
     if (!router.has(command)) {
