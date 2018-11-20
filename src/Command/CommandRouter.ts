@@ -51,30 +51,4 @@ export default class CommandRouter {
     const handler = this.getHandler(command)
     return handler(args, message)
   }
-  // map = {
-  //   'cat': CatCommandHandler,
-  //   'xiv': XIVCommandHandler
-  // }
-
-  // getMap = () => {
-  //   return this.map
-  // }
-
-  // has = (command: string) => {
-  //   return !!this.map[command]
-  // }
-
-  // getHandler = (command: string) => {
-  //   if (!this.has(command)) {
-  //     throw new Error(`Tried to get handler for unregistered command '${command}'`)
-  //   }
-
-  //   return this.map[command]
-  // }
-
-  // dispatch = (command: string, args: Array<string>, message: Message) => {
-  //   const handler = this.getHandler(command)
-
-  //   return (new handler).handle(args, message)
-  // }
 }
