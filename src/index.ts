@@ -12,6 +12,10 @@ function handleError(error: Error, message: Message) {
 client.on('ready', () => client.user.setActivity('with wool. Type /? for help.'))
 
 client.on('message', (message: Message) => {
+  if (message.author.bot) {
+    return
+  }
+
   if (message.content.startsWith('/')) {
     const args = message.content.split(' ')
     const command = args.shift().substr(1)
