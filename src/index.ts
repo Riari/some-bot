@@ -6,7 +6,7 @@ import KeywordHandler from './Handlers/Keyword'
 
 function handleError(error: Error, message: Message) {
   console.error(error)
-  message.channel.send(`[Error] ${error.message}`)
+  message.channel.send(`[Error] ${error.message}. Type /? for help.`)
 }
 
 client.on('ready', () => client.user.setActivity('with wool. Type /? for help.'))

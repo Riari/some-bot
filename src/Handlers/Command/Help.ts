@@ -1,43 +1,57 @@
 import { Message, RichEmbed } from 'discord.js'
 
 import commands from '../../commands'
-import resolve from '../../command/resolve'
 
 export default class HelpCommandHandler {
   public static handle (args: Array<string>, message: Message) {
-    console.log(args)
-    // const embed = new RichEmbed
+    const embed = new RichEmbed
 
-    // if (!args.length) {
-    //   embed.setTitle('Some Bot: Help')
-    //   embed.setDescription('Available commands:')
+    if (!args.length) {
+      embed.setTitle('Some Bot: Help')
+      embed.setDescription('Available commands:')
       
-    //   for (let commandName in commands) {
-    //     if (commands[commandName].hasOwnProperty('description')) {
-    //       embed.addField(`/${commandName}`, commands[commandName].description)
-    //     }
-    //   }
+      for (let commandName in commands) {
+        if (commands[commandName].hasOwnProperty('description')) {
+          embed.addField(`/${commandName}`, commands[commandName].description)
+        }
+      }
   
-    //   embed.setFooter('Type "/help <command> (<subcommand>)" for help with a specific (sub)command.')
-  
-    // } else {
-    //   if (!router.has(args[0])) {
-    //     return message.channel.send(`Unrecognised command "${args[0]}". Type /help for a list of available commands.`)
-    //   }
-      
-    //   const command = router.getCommand(args[0])
+      embed.setFooter('Type "/help <command>" for help with a specific command.')
+    } else {
+      const start = args.shift()
 
-    //   embed.setTitle(`/${args[0]} <subcommand>`)
-    //   embed.setDescription('Subcommands:')
+      let resolution = commands[start]
+    
+      for (const part of args) {
+        if (!resolution.hasOwnProperty('has') || !resolution.has[part]) {
+          throw new Error(`Unrecognised command '${start} ${args.join(' ')}'`)
+        }
 
-    //   for (var arg in command.args) {
-    //     const details = command.args[arg]
-    //     embed.addField(arg, details.description)
-    //   }
+        resolution = resolution.has[part]
+      }
 
-    //   embed.setFooter(`Type "/help ${args[0]} <arg>" for help with a specific subcommand.`)
-    // }
+      let title = `/${start} ${args.join(' ')}`
 
-    // return message.channel.send(embed)
+      if (resolution.accepts) {
+        title += ' <' + resolution.accepts.join('> <') + '>'
+      }
+
+      embed.setTitle(title)
+      embed.setDescription(resolution.description)
+
+      if (resolution.hasOwnProperty('has')) {
+        Object.keys(resolution.has).forEach(key => {
+          let name = key
+    
+          if (resolution.has[key].accepts) {
+            name += ' <' + resolution.has[key].accepts.join('> <') + '>'
+          }
+
+          embed.addField(name, resolution.has[key].description)
+        })
+      }
+    }
+
+    return message.channel.send(embed)
   }
 }

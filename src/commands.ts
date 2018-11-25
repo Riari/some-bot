@@ -8,8 +8,9 @@ export interface CommandMap {
 
 export interface CommandPart {
   description?: string
-  uses?: Function
   has?: CommandMap
+  uses?: Function
+  accepts?: Array<string>
 }
 
 const map: CommandMap = {
@@ -29,10 +30,12 @@ const map: CommandMap = {
     description: 'Final Fantasy XIV stuff.',
     has: {
       lookup: {
+        description: 'Look stuff up.',
         has: {
           pc: {
             description: 'Look up a player character.',
-            uses: XIVCommandHandler.lookupPC
+            uses: XIVCommandHandler.lookupPC,
+            accepts: ['worldname', 'firstname', 'lastname']
           },
           fc: {
             description: 'Look up a free company.',
