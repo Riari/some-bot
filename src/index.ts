@@ -1,7 +1,7 @@
 import { Message } from 'discord.js'
 import client from './client'
 
-import router from './routes'
+import dispatch from './command/dispatch'
 import KeywordHandler from './Handlers/Keyword'
 
 function handleError(error: Error, message: Message) {
@@ -17,19 +17,10 @@ client.on('message', (message: Message) => {
   }
 
   if (message.content.startsWith('/')) {
-    const args = message.content.split(' ')
-    const command = args.shift().substr(1)
-
-    if (!command) {
-      return
-    }
-
-    if (!router.has(command)) {
-      return console.log(`No registered handler for command '${command}'; ignoring`)
-    }
+    const line = message.content.substr(1)
 
     try {
-      router.dispatch(command, args, message).catch(error => handleError(error, message))
+      dispatch(line, message)
     } catch (error) {
       handleError(error, message)
     }

@@ -1,40 +1,43 @@
 import { Message, RichEmbed } from 'discord.js'
 
-import CommandHandler from '../Command'
-import router from '../../routes'
+import commands from '../../commands'
+import resolve from '../../command/resolve'
 
-export default class HelpCommandHandler extends CommandHandler {
+export default class HelpCommandHandler {
   public static handle (args: Array<string>, message: Message) {
-    const embed = new RichEmbed
+    console.log(args)
+    // const embed = new RichEmbed
 
-    if (!args.length) {
-      embed.setTitle('Some Bot: Help')
-      embed.setDescription('Available subcommands:')
+    // if (!args.length) {
+    //   embed.setTitle('Some Bot: Help')
+    //   embed.setDescription('Available commands:')
       
-      for (var commandName in router.commands) {
-        embed.addField(`/${commandName}`, router.commands[commandName].description)
-      }
+    //   for (let commandName in commands) {
+    //     if (commands[commandName].hasOwnProperty('description')) {
+    //       embed.addField(`/${commandName}`, commands[commandName].description)
+    //     }
+    //   }
   
-      embed.setFooter('Type "/help <command> (<subcommand>)" for help with a specific (sub)command.')
+    //   embed.setFooter('Type "/help <command> (<subcommand>)" for help with a specific (sub)command.')
   
-    } else {
-      if (!router.has(args[0])) {
-        return message.channel.send(`Unrecognised command "${args[0]}". Type /help for a list of available commands.`)
-      }
+    // } else {
+    //   if (!router.has(args[0])) {
+    //     return message.channel.send(`Unrecognised command "${args[0]}". Type /help for a list of available commands.`)
+    //   }
       
-      const command = router.getCommand(args[0])
+    //   const command = router.getCommand(args[0])
 
-      embed.setTitle(`/${args[0]} <subcommand>`)
-      embed.setDescription('Subcommands:')
+    //   embed.setTitle(`/${args[0]} <subcommand>`)
+    //   embed.setDescription('Subcommands:')
 
-      for (var arg in command.args) {
-        const details = command.args[arg]
-        embed.addField(arg, details.description)
-      }
+    //   for (var arg in command.args) {
+    //     const details = command.args[arg]
+    //     embed.addField(arg, details.description)
+    //   }
 
-      embed.setFooter(`Type "/help ${args[0]} <arg>" for help with a specific subcommand.`)
-    }
+    //   embed.setFooter(`Type "/help ${args[0]} <arg>" for help with a specific subcommand.`)
+    // }
 
-    return message.channel.send(embed)
+    // return message.channel.send(embed)
   }
 }
