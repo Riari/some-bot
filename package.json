@@ -1,28 +1,24 @@
 {
-  "name": "some-bot",
+  "name": "somebot",
   "version": "1.0.0",
-  "description": "Discord Bot for Some Place",
-  "main": "src/index.ts",
+  "description": "",
+  "main": "src/index.js",
   "scripts": {
-    "start": "ts-node src/index.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/riari/some-bot.git"
+    "build": "tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json -w"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://gitlab.com/riari/some-bot/issues"
-  },
-  "homepage": "https://gitlab.com/riari/some-bot#README",
   "dependencies": {
-    "axios": "^0.18.0",
-    "cheerio": "^1.0.0-rc.2",
-    "discord.js": "^11.4.2",
-    "typescript": "^3.1.1"
+    "@types/node": "^14.14.25",
+    "archiver": "^5.2.0",
+    "discord-akairo": "^8.1.0",
+    "discord.js": "^12.5.1",
+    "typescript": "^4.1.5"
   },
   "devDependencies": {
-    "@types/node": "^10.11.4"
+    "@types/archiver": "^5.1.0",
+    "@types/ws": "^7.4.0",
+    "ts-node": "^9.1.1"
   }
 }

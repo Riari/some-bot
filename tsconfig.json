@@ -1,11 +1,24 @@
 {
-  "include": [
-    "./src/**/*"
-  ],
-  "compilerOptions": {
-    "target": "es6",
-    "lib": ["es7"],
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node"
-  }
+	"compilerOptions": {
+		"target": "es2017",
+		"module": "commonjs",
+		"outDir": "./build",
+		"rootDir": "./src",
+		"declaration": false,
+		"strict": true,
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"alwaysStrict": true,
+        "resolveJsonModule": true,
+		"typeRoots": [
+            "./node_modules/@types"
+        ]
+	},
+	"exclude": [
+		"./build/*",
+		"./node_modules/*",
+	],
+	"include": [
+		"./src/**/*.ts"
+	]
 }
